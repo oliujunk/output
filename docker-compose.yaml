@@ -1,0 +1,7 @@
+version: '3.1'
+
+services:
+  input:
+    image: registry.cn-hangzhou.aliyuncs.com/oliujunk/output
+    container_name: output
+    restart: always
