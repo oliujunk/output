@@ -22,6 +22,7 @@ type User struct {
 	Username int      `json:"username"`
 	UserType string   `json:"userType"`
 	Devices  []Device `json:"devices"`
+	Pests    []Pest   `json:"pests"`
 }
 
 // Device 设备信息
@@ -30,6 +31,13 @@ type Device struct {
 	DeviceName   string `json:"facName"`
 	DeviceRemark string `json:"remark"`
 	SIM          string `json:"sim"`
+}
+
+// Pest 虫情设备信息
+type Pest struct {
+	DeviceID     string `json:"facId"`
+	DeviceName   string `json:"facName"`
+	DeviceRemark string `json:"remark"`
 }
 
 // DataEntity 数据
@@ -156,7 +164,6 @@ func GetToken(username, password string) string {
 	return token.Token
 }
 
-// GetDevices 获取设备ID
 func GetDevices(username, token string) []Device {
 	client := &http.Client{Timeout: 5 * time.Second}
 	req, err := http.NewRequest("GET", "http://115.28.187.9:8005/user/"+username, nil)
@@ -173,4 +180,22 @@ func GetDevices(username, token string) []Device {
 	var user User
 	_ = json.Unmarshal(body, &user)
 	return user.Devices
+}
+
+func GetPests(username, token string) []Pest {
+	client := &http.Client{Timeout: 5 * time.Second}
+	req, err := http.NewRequest("GET", "http://115.28.187.9:8005/user/"+username, nil)
+	if err != nil {
+		return nil
+	}
+	req.Header.Set("token", token)
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	var user User
+	_ = json.Unmarshal(body, &user)
+	return user.Pests
 }

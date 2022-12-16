@@ -2,7 +2,12 @@ package main
 
 import (
 	"log"
+	"oliujunk/output/hangjingqi"
+	"oliujunk/output/houtuyun"
+	"oliujunk/output/jiamusi"
 	"oliujunk/output/jiangsushengnywlw"
+	"oliujunk/output/soilmoisture"
+	"oliujunk/output/zhongrui"
 )
 
 func init() {
@@ -12,15 +17,15 @@ func init() {
 
 func main() {
 
-	//soilmoisture.Start()
-	//
-	//jiamusi.Start()
-	//
-	//hangjingqi.Start()
-	//
-	//zhongrui.Start()
-	//
-	//houtuyun.Start()
+	soilmoisture.Start()
+
+	jiamusi.Start()
+
+	hangjingqi.Start()
+
+	zhongrui.Start()
+
+	houtuyun.Start()
 
 	jiangsushengnywlw.Start()
 

@@ -43,3 +43,21 @@ func RNGetDevices(username, token string) []Device {
 	_ = json.Unmarshal(body, &user)
 	return user.Devices
 }
+
+func RNGetPests(username, token string) []Pest {
+	client := &http.Client{Timeout: 5 * time.Second}
+	req, err := http.NewRequest("GET", "http://101.34.116.221:8005/user/"+username, nil)
+	if err != nil {
+		return nil
+	}
+	req.Header.Set("token", token)
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	var user User
+	_ = json.Unmarshal(body, &user)
+	return user.Pests
+}
