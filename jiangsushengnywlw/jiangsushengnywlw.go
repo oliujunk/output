@@ -15,9 +15,10 @@ import (
 )
 
 var (
-	token   string
-	devices []xphapi.Device
-	pests   []xphapi.Pest
+	token    string
+	devices  []xphapi.Device
+	pests    []xphapi.Pest
+	pestName = [...]string{"airHumidity", "airTemp", "lightIntensity", "lan", "lat", "BugNumOne"}
 )
 
 func Start() {
@@ -31,7 +32,7 @@ func Start() {
 	_, _ = job.AddFunc("0 0 0/12 * * *", updateToken)
 	_, _ = job.AddFunc("0 0 0/1 * * *", updateDevices)
 	_, _ = job.AddFunc("0 0 0/1 * * *", updatePests)
-	//_, _ = job.AddFunc("0 0 */1 * * *", sendData)
+	//_, _ = job.AddFunc("0 */1 * * * *", sendData)
 	_, _ = job.AddFunc("0 */30 * * * *", sendData)
 	job.Start()
 }
@@ -65,13 +66,14 @@ func sendData() {
 			now := time.Now()
 			datatime, _ := time.Parse("2006-01-02 15:04:05", dataEntity.Entity[0].Datetime)
 			if datatime.After(now.Add(-time.Hour * 2)) {
+				names := strings.Split(device.ElementExtendName, "/")
 				var build strings.Builder
 				build.WriteString(`{`)
 				build.WriteString(fmt.Sprintf(`"deviceId":"%d",`, device.DeviceID))
 				build.WriteString(fmt.Sprintf(`"sessionKey":"%s",`, "121345"))
 				build.WriteString(fmt.Sprintf(`"data":{`))
-				for _, entity := range dataEntity.Entity {
-					build.WriteString(fmt.Sprintf(`"%s":%s,`, entity.EName, entity.EValue))
+				for index, entity := range dataEntity.Entity {
+					build.WriteString(fmt.Sprintf(`"%s":%s,`, names[index], entity.EValue))
 				}
 				message := build.String()
 				message = strings.TrimRight(message, ",")
@@ -118,8 +120,8 @@ func sendData() {
 				build.WriteString(fmt.Sprintf(`"deviceId":"%s",`, pest.DeviceID))
 				build.WriteString(fmt.Sprintf(`"sessionKey":"%s",`, "121345"))
 				build.WriteString(fmt.Sprintf(`"data":{`))
-				for _, entity := range dataEntity.Entity {
-					build.WriteString(fmt.Sprintf(`"%s":%s,`, entity.EName, entity.EValue))
+				for index, entity := range dataEntity.Entity {
+					build.WriteString(fmt.Sprintf(`"%s":%s,`, pestName[index], entity.EValue))
 				}
 				message := build.String()
 				message = strings.TrimRight(message, ",")
