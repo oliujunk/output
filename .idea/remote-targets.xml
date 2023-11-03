@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteTargetsManager">
+    <targets>
+      <target name="registry.cn-hangzhou.aliyuncs.com/oliujunk/output" type="docker" uuid="40e0aa3c-d15d-47a8-a3c4-8c0d0a26d726">
+        <config>
+          <option name="targetPlatform">
+            <TargetPlatform />
+          </option>
+          <option name="buildImageConfig">
+            <BuildImageConfig>
+              <option name="builtImageTag" value="registry.cn-hangzhou.aliyuncs.com/oliujunk/output" />
+              <option name="dockerFile" value="Dockerfile" />
+            </BuildImageConfig>
+          </option>
+        </config>
+        <ContributedStateBase type="GoLanguageRuntime">
+          <config>
+            <option name="compiledExecutablesVolume">
+              <VolumeState>
+                <option name="targetSpecificBits">
+                  <map>
+                    <entry key="mountAsVolume" value="false" />
+                  </map>
+                </option>
+              </VolumeState>
+            </option>
+            <option name="projectSourcesVolume">
+              <VolumeState>
+                <option name="targetSpecificBits">
+                  <map>
+                    <entry key="mountAsVolume" value="false" />
+                  </map>
+                </option>
+              </VolumeState>
+            </option>
+          </config>
+        </ContributedStateBase>
+      </target>
+    </targets>
+  </component>
+</project>
