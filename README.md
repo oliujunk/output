@@ -16,4 +16,11 @@ go build
 sudo docker build -t registry.cn-hangzhou.aliyuncs.com/oliujunk/output .
 
 sudo docker push registry.cn-hangzhou.aliyuncs.com/oliujunk/output
+
+
+
+
+sudo docker build -t registry.cn-hangzhou.aliyuncs.com/oliujunk/output-wang .
+
+sudo docker push registry.cn-hangzhou.aliyuncs.com/oliujunk/output-wang
 ```

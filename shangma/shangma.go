@@ -1,4 +1,4 @@
-package houtuyun
+package shangma
 
 import (
 	"bytes"
@@ -22,45 +22,31 @@ import (
 const broker = "ssl://lbs-hivemqtt-private-hty.lunz.cn:8883"
 
 var (
-	xphToken      string
-	devices       []xphapi.Device
-	clients       []mqtt.Client
-	clientsStatus []bool
-
-	xphToken47      string
-	devices47       []xphapi.Device
-	clients47       []mqtt.Client
-	clientsStatus47 []bool
+	xphToken47shangma      string
+	devices47shangma       []xphapi.Device
+	clients47shangma       []mqtt.Client
+	clientsStatus47shangma []bool
 
 	sporeClient mqtt.Client
 	pestClient  mqtt.Client
-	pestImei    = "G95799357"
-	sporeImei   = "866547052770826"
+	pestImei    = "861942052298552"
+	sporeImei   = "867814044628465"
 )
 
 func updateXphToken() {
-	xphToken = xphapi.RNGetToken("H810031", "88888888")
-	xphToken47 = xphapi.NewGetToken("0041662", "123456")
+	xphToken47shangma = xphapi.NewGetToken("shangma", "sm88888888")
 }
 
 func updateDevices() {
-	devices = xphapi.RNGetDevices("H810031", xphToken)
-	if len(clients) > 0 {
-		for _, client := range clients {
+
+	devices47shangma = xphapi.NewGetDevices("shangma", xphToken47shangma)
+
+	if len(clients47shangma) > 0 {
+		for _, client := range clients47shangma {
 			client.Disconnect(500)
 		}
-		clients = []mqtt.Client{}
-		clientsStatus = []bool{}
-	}
-
-	devices47 = xphapi.NewGetDevices("0041662", xphToken47)
-
-	if len(clients47) > 0 {
-		for _, client := range clients47 {
-			client.Disconnect(500)
-		}
-		clients47 = []mqtt.Client{}
-		clientsStatus47 = []bool{}
+		clients47shangma = []mqtt.Client{}
+		clientsStatus47shangma = []bool{}
 	}
 
 	initMqttClient()
@@ -87,17 +73,17 @@ func NewTLSConfig() *tls.Config {
 }
 
 func initMqttClient() {
-	for _, device := range devices {
+	for _, device := range devices47shangma {
 		tlsConfig := NewTLSConfig()
-		//clientOptions := mqtt.NewClientOptions().AddBroker(broker).SetUsername("zrlbsmqttgateway1").SetPassword("123456781").SetTLSConfig(tlsConfig).SetClientID(fmt.Sprintf("%d", device.DeviceID))
+		//clientOptions := mqtt.NewClientOptions().AddBroker(broker).SetUsername("zrlbsmqttgateway1").SetPassword("123456781").SetTLSConfig(tlsConfig)
 		clientOptions := mqtt.NewClientOptions().AddBroker(broker).SetUsername("zrlbsmqttgateway1").SetPassword("zrlbsmqttgateway1pw").SetTLSConfig(tlsConfig).SetClientID(fmt.Sprintf("%d", device.DeviceID))
 		clientOptions.SetConnectTimeout(time.Duration(60) * time.Second)
 		client := mqtt.NewClient(clientOptions)
 		if token := client.Connect(); token.Wait() && token.Error() != nil {
 			panic(token.Error())
 		}
-		clients = append(clients, client)
-		clientsStatus = append(clientsStatus, true)
+		clients47shangma = append(clients47shangma, client)
+		clientsStatus47shangma = append(clientsStatus47shangma, true)
 		var build strings.Builder
 		build.WriteString(`{`)
 		build.WriteString(fmt.Sprintf(`"did":"%d",`, device.DeviceID))
@@ -111,37 +97,15 @@ func initMqttClient() {
 		log.Println(build.String())
 		client.Publish("/Iot/Status", 1, true, build.String())
 
-		client.Subscribe("/Iot/Sub", 1, controlHandler)
-	}
-
-	for _, device := range devices47 {
-		tlsConfig := NewTLSConfig()
-		clientOptions := mqtt.NewClientOptions().AddBroker(broker).SetUsername("zrlbsmqttgateway1").SetPassword("zrlbsmqttgateway1pw").SetTLSConfig(tlsConfig)
-		clientOptions.SetConnectTimeout(time.Duration(60) * time.Second)
-		client := mqtt.NewClient(clientOptions)
-		if token := client.Connect(); token.Wait() && token.Error() != nil {
-			panic(token.Error())
-		}
-		clients47 = append(clients47, client)
-		clientsStatus47 = append(clientsStatus47, true)
-		var build strings.Builder
-		build.WriteString(`{`)
-		build.WriteString(fmt.Sprintf(`"did":"%d",`, device.DeviceID))
-		build.WriteString(fmt.Sprintf(`"gid":"%d",`, device.DeviceID))
-		build.WriteString(fmt.Sprintf(`"ptid":%d,`, 0))
-		build.WriteString(fmt.Sprintf(`"cid":%d,`, 1))
-		build.WriteString(fmt.Sprintf(`"time":"%s",`, time.Now().Format("2006/01/02 15:04:05")))
-		build.WriteString(fmt.Sprintf(`"func":%d,`, 98))
-		build.WriteString(fmt.Sprintf(`"info":"%s"`, "Online"))
-		build.WriteString(`}`)
-		log.Println(build.String())
-		client.Publish("/Iot/Status", 1, true, build.String())
+		client.Subscribe("/Iot/Sub", 1, controlHandler47)
 	}
 }
 
 func initSporeMqttClient() {
 	tlsConfig := NewTLSConfig()
+	//clientOptions := mqtt.NewClientOptions().AddBroker(broker).SetUsername("zrlbsmqttgateway1").SetPassword("123456781").SetTLSConfig(tlsConfig)
 	clientOptions := mqtt.NewClientOptions().AddBroker(broker).SetUsername("zrlbsmqttgateway1").SetPassword("zrlbsmqttgateway1pw").SetTLSConfig(tlsConfig)
+
 	clientOptions.SetConnectTimeout(time.Duration(60) * time.Second)
 	client := mqtt.NewClient(clientOptions)
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
@@ -164,7 +128,10 @@ func initSporeMqttClient() {
 
 func initPestMqttClient() {
 	tlsConfig := NewTLSConfig()
+
+	//clientOptions := mqtt.NewClientOptions().AddBroker(broker).SetUsername("zrlbsmqttgateway1").SetPassword("123456781").SetTLSConfig(tlsConfig)
 	clientOptions := mqtt.NewClientOptions().AddBroker(broker).SetUsername("zrlbsmqttgateway1").SetPassword("zrlbsmqttgateway1pw").SetTLSConfig(tlsConfig)
+
 	clientOptions.SetConnectTimeout(time.Duration(60) * time.Second)
 	client := mqtt.NewClient(clientOptions)
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
@@ -186,7 +153,7 @@ func initPestMqttClient() {
 }
 
 func Start() {
-	log.Println("后土云平台推送 start ------")
+	log.Println("后土云上马项目平台推送 start ------")
 	updateXphToken()
 	updateDevices()
 	job := cron.New(
@@ -202,24 +169,9 @@ func Start() {
 
 func sendHeartBeat() {
 	var build strings.Builder
-	for index, device := range devices {
-		if clientsStatus[index] {
-			build.Reset()
-			build.WriteString(`{`)
-			build.WriteString(fmt.Sprintf(`"did":"%d",`, device.DeviceID))
-			build.WriteString(fmt.Sprintf(`"gid":"%d",`, device.DeviceID))
-			build.WriteString(fmt.Sprintf(`"ptid":%d,`, 0))
-			build.WriteString(fmt.Sprintf(`"cid":%d,`, 1))
-			build.WriteString(fmt.Sprintf(`"time":"%s",`, time.Now().Format("2006/01/02 15:04:05")))
-			build.WriteString(fmt.Sprintf(`"func":%d`, 1))
-			build.WriteString(`}`)
-			log.Println(index, build.String())
-			clients[index].Publish("/Iot/Pub", 1, false, build.String())
-		}
-	}
 
-	for index, device := range devices47 {
-		if clientsStatus47[index] {
+	for index, device := range devices47shangma {
+		if clientsStatus47shangma[index] {
 			build.Reset()
 			build.WriteString(`{`)
 			build.WriteString(fmt.Sprintf(`"did":"%d",`, device.DeviceID))
@@ -230,7 +182,7 @@ func sendHeartBeat() {
 			build.WriteString(fmt.Sprintf(`"func":%d`, 1))
 			build.WriteString(`}`)
 			log.Println(index, build.String())
-			clients47[index].Publish("/Iot/Pub", 1, false, build.String())
+			clients47shangma[index].Publish("/Iot/Pub", 1, false, build.String())
 		}
 	}
 
@@ -261,70 +213,8 @@ func sendHeartBeat() {
 }
 
 func sendData() {
-	for index, device := range devices {
-		resp, err := http.Get("http://101.34.116.221:8005/intfa/queryData/" + strconv.Itoa(device.DeviceID))
-		if err != nil {
-			log.Println("获取数据异常")
-			return
-		}
-		result, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			continue
-		}
-		dataEntity := xphapi.DataEntity{}
-		_ = json.Unmarshal(result, &dataEntity)
-		if len(dataEntity.Entity) > 0 {
-			now := time.Now()
-			datatime, _ := time.Parse("2006-01-02 15:04:05", dataEntity.Entity[0].Datetime)
-			if datatime.After(now.Add(-time.Minute*60)) || true {
-				var dataBuilder strings.Builder
-				dataBuilder.WriteString(`{`)
-				for index, entity := range dataEntity.Entity {
-					if index+1 == len(dataEntity.Entity) {
-						dataBuilder.WriteString(fmt.Sprintf(`"%s":%s`, entity.ENum, entity.EValue))
-					} else {
-						dataBuilder.WriteString(fmt.Sprintf(`"%s":%s,`, entity.ENum, entity.EValue))
-					}
-				}
-				dataBuilder.WriteString(`}`)
 
-				var build strings.Builder
-				build.WriteString(`{`)
-				build.WriteString(fmt.Sprintf(`"did":"%d",`, device.DeviceID))
-				build.WriteString(fmt.Sprintf(`"gid":"%d",`, device.DeviceID))
-				build.WriteString(fmt.Sprintf(`"ptid":%d,`, 0))
-				build.WriteString(fmt.Sprintf(`"cid":%d,`, 1))
-				build.WriteString(fmt.Sprintf(`"time":"%s",`, time.Now().Format("2006/01/02 15:04:05")))
-				build.WriteString(fmt.Sprintf(`"func":%d,`, 2))
-				build.WriteString(fmt.Sprintf(`"level":%d,`, 100))
-				build.WriteString(fmt.Sprintf(`"consume":%d,`, 1000))
-				build.WriteString(fmt.Sprintf(`"err":%d,`, 0))
-				build.WriteString(fmt.Sprintf(`"points":%s`, dataBuilder.String()))
-				build.WriteString(`}`)
-				log.Println(index, build.String())
-				clients[index].Publish("/Iot/Pub", 1, false, build.String())
-			} else {
-				if clientsStatus[index] {
-					var build strings.Builder
-					build.WriteString(`{`)
-					build.WriteString(fmt.Sprintf(`"did":"%d",`, device.DeviceID))
-					build.WriteString(fmt.Sprintf(`"gid":"%d",`, device.DeviceID))
-					build.WriteString(fmt.Sprintf(`"ptid":%d,`, 0))
-					build.WriteString(fmt.Sprintf(`"cid":%d,`, 1))
-					build.WriteString(fmt.Sprintf(`"time":"%s",`, time.Now().Format("2006/01/02 15:04:05")))
-					build.WriteString(fmt.Sprintf(`"func":%d,`, 99))
-					build.WriteString(fmt.Sprintf(`"info":"%s"`, "GateWayOffline"))
-					build.WriteString(`}`)
-					log.Println(index, build.String())
-					clients[index].Publish("/Iot/Pub", 1, false, build.String())
-					clientsStatus[index] = false
-				}
-			}
-			time.Sleep(1 * time.Second)
-		}
-	}
-
-	for index, device := range devices47 {
+	for index, device := range devices47shangma {
 		resp, err := http.Get("http://47.105.215.208:8005/intfa/queryData/" + strconv.Itoa(device.DeviceID))
 		if err != nil {
 			log.Println("获取数据异常")
@@ -339,7 +229,7 @@ func sendData() {
 		if len(dataEntity.Entity) > 0 {
 			now := time.Now()
 			datatime, _ := time.Parse("2006-01-02 15:04:05", dataEntity.Entity[0].Datetime)
-			if datatime.After(now.Add(-time.Minute*60)) || true {
+			if datatime.After(now.Add(-time.Minute * 60)) {
 				var dataBuilder strings.Builder
 				dataBuilder.WriteString(`{`)
 				enumMap := make(map[string]int)
@@ -373,9 +263,9 @@ func sendData() {
 				build.WriteString(fmt.Sprintf(`"points":%s`, dataBuilder.String()))
 				build.WriteString(`}`)
 				log.Println(index, build.String())
-				clients47[index].Publish("/Iot/Pub", 1, false, build.String())
+				clients47shangma[index].Publish("/Iot/Pub", 1, false, build.String())
 			} else {
-				if clientsStatus47[index] {
+				if clientsStatus47shangma[index] {
 					var build strings.Builder
 					build.WriteString(`{`)
 					build.WriteString(fmt.Sprintf(`"did":"%d",`, device.DeviceID))
@@ -387,8 +277,8 @@ func sendData() {
 					build.WriteString(fmt.Sprintf(`"info":"%s"`, "GateWayOffline"))
 					build.WriteString(`}`)
 					log.Println(index, build.String())
-					clients47[index].Publish("/Iot/Pub", 1, false, build.String())
-					clientsStatus47[index] = false
+					clients47shangma[index].Publish("/Iot/Pub", 1, false, build.String())
+					clientsStatus47shangma[index] = false
 				}
 			}
 			time.Sleep(1 * time.Second)
@@ -398,18 +288,102 @@ func sendData() {
 	sendPestData()
 
 	sendSporeData()
+
+}
+
+func controlHandler47(client mqtt.Client, message mqtt.Message) {
+	reader := client.OptionsReader()
+	deviceID := reader.ClientID()
+
+	payload, err := simplejson.NewJson(message.Payload())
+	if err != nil {
+		return
+	}
+
+	if deviceID == payload.Get("did").MustString() {
+
+		log.Println(string(message.Payload()))
+
+		numS := payload.Get("cmd").Get("K").MustString()
+		stateS := payload.Get("cmd").Get("V").MustString()
+		func111 := payload.Get("func").MustInt()
+		num, err := strconv.Atoi(numS)
+		if err != nil {
+			return
+		}
+		state, err := strconv.Atoi(stateS)
+		if err != nil {
+			return
+		}
+		if func111 == 83 {
+			log.Println(deviceID, num, state)
+			id, _ := strconv.Atoi(deviceID)
+			result := control47(id, num, state)
+			if result {
+				var build strings.Builder
+				build.WriteString(`{`)
+				build.WriteString(fmt.Sprintf(`"did":"%s",`, deviceID))
+				build.WriteString(fmt.Sprintf(`"gid":"%s",`, deviceID))
+				build.WriteString(fmt.Sprintf(`"ptid":%d,`, 0))
+				build.WriteString(fmt.Sprintf(`"cid":%d,`, 1))
+				build.WriteString(fmt.Sprintf(`"time":"%s",`, time.Now().Format("2006/01/02 15:04:05")))
+				build.WriteString(fmt.Sprintf(`"func":%d,`, 4))
+				build.WriteString(fmt.Sprintf(`"code":"%s",`, payload.Get("code").MustString()))
+				build.WriteString(fmt.Sprintf(`"err":%d,`, 0))
+				build.WriteString(fmt.Sprintf(`"info":"%t"`, result))
+				build.WriteString(`}`)
+				log.Println(build.String())
+				client.Publish("/Iot/Pub", 1, false, build.String())
+			} else {
+				var build strings.Builder
+				build.WriteString(`{`)
+				build.WriteString(fmt.Sprintf(`"did":"%s",`, deviceID))
+				build.WriteString(fmt.Sprintf(`"gid":"%s",`, deviceID))
+				build.WriteString(fmt.Sprintf(`"ptid":%d,`, 0))
+				build.WriteString(fmt.Sprintf(`"cid":%d,`, 1))
+				build.WriteString(fmt.Sprintf(`"time":"%s",`, time.Now().Format("2006/01/02 15:04:05")))
+				build.WriteString(fmt.Sprintf(`"func":%d,`, 4))
+				build.WriteString(fmt.Sprintf(`"code":"%s",`, payload.Get("code").MustString()))
+				build.WriteString(fmt.Sprintf(`"err":%d,`, 5))
+				build.WriteString(fmt.Sprintf(`"info":"%t"`, result))
+				build.WriteString(`}`)
+				log.Println(build.String())
+				client.Publish("/Iot/Pub", 1, false, build.String())
+			}
+		}
+	}
+}
+
+func control47(deviceID, num, state int) bool {
+	client := &http.Client{Timeout: 5 * time.Second}
+	loginParam := map[string]int{"deviceId": deviceID, "relayNum": num, "relayState": state}
+	jsonStr, _ := json.Marshal(loginParam)
+	request, err := http.NewRequest("POST", "http://47.105.215.208:8005/relay", bytes.NewBuffer(jsonStr))
+	request.Header.Add("token", xphToken47shangma)
+	request.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(request)
+	if err != nil {
+		log.Println(err)
+	}
+	result, _ := ioutil.ReadAll(resp.Body)
+	log.Println(string(result))
+	parseBool, err := strconv.ParseBool(string(result))
+	if err != nil {
+		return false
+	}
+	return parseBool
 }
 
 func sendPestData() {
-	pestData := getPestData(pestImei, xphToken)
+	pestData := getPestData(pestImei, xphToken47shangma)
 	var dataBuilder strings.Builder
 	dataBuilder.WriteString(`{`)
-	dataBuilder.WriteString(fmt.Sprintf(`"%s":%.1f,`, "102", float32(pestData.E1)/10.0))      // 湿度
+	//dataBuilder.WriteString(fmt.Sprintf(`"%s":%.1f,`, "102", float32(pestData.E1)/10.0))      // 湿度
 	dataBuilder.WriteString(fmt.Sprintf(`"%s":%.1f,`, "101", float32(pestData.E2)/10.0))      // 温度
 	dataBuilder.WriteString(fmt.Sprintf(`"%s":%d,`, "112", pestData.E3))                      // 照度
-	dataBuilder.WriteString(fmt.Sprintf(`"%s":%.6f,`, "262", float32(pestData.E4)/1000000.0)) // 经度
-	dataBuilder.WriteString(fmt.Sprintf(`"%s":%.6f,`, "263", float32(pestData.E5)/1000000.0)) // 纬度
-	dataBuilder.WriteString(fmt.Sprintf(`"%s":%d`, "277", pestData.E6))                       // 诱虫数
+	dataBuilder.WriteString(fmt.Sprintf(`"%s":%.6f,`, "262", float32(pestData.E9)/1000000.0)) // 经度
+	dataBuilder.WriteString(fmt.Sprintf(`"%s":%.6f`, "263", float32(pestData.E10)/1000000.0)) // 纬度
+	//dataBuilder.WriteString(fmt.Sprintf(`"%s":%d`, "277", pestData.E6))                        // 诱虫数
 	dataBuilder.WriteString(`}`)
 
 	var build strings.Builder
@@ -431,7 +405,7 @@ func sendPestData() {
 
 func getPestData(imei, token string) xphapi.PestData {
 	client := &http.Client{Timeout: 5 * time.Second}
-	req, _ := http.NewRequest("GET", "http://101.34.116.221:8005/pest/dataextend/"+imei, nil)
+	req, _ := http.NewRequest("GET", "http://115.28.187.9:8005/pest/dataextend/"+imei, nil)
 
 	req.Header.Set("token", token)
 	resp, _ := client.Do(req)
@@ -443,7 +417,7 @@ func getPestData(imei, token string) xphapi.PestData {
 }
 
 func sendSporeData() {
-	sporeData := getPestData(sporeImei, xphToken)
+	sporeData := getPestData(sporeImei, xphToken47shangma)
 	var dataBuilder strings.Builder
 	dataBuilder.WriteString(`{`)
 	dataBuilder.WriteString(fmt.Sprintf(`"%s":%d,`, "264", sporeData.E1))                       // 工作状态
@@ -481,87 +455,4 @@ func sendSporeData() {
 	build.WriteString(`}`)
 	log.Println(build.String())
 	sporeClient.Publish("/Iot/Pub", 1, false, build.String())
-}
-
-func controlHandler(client mqtt.Client, message mqtt.Message) {
-	reader := client.OptionsReader()
-	deviceID := reader.ClientID()
-
-	payload, err := simplejson.NewJson(message.Payload())
-	if err != nil {
-		return
-	}
-
-	if deviceID == payload.Get("did").MustString() {
-
-		log.Println(string(message.Payload()))
-
-		numS := payload.Get("cmd").Get("K").MustString()
-		stateS := payload.Get("cmd").Get("V").MustString()
-		func111 := payload.Get("func").MustInt()
-		num, err := strconv.Atoi(numS)
-		if err != nil {
-			return
-		}
-		state, err := strconv.Atoi(stateS)
-		if err != nil {
-			return
-		}
-		if func111 == 83 {
-			log.Println(deviceID, num, state)
-			id, _ := strconv.Atoi(deviceID)
-			result := control(id, num, state)
-			if result {
-				var build strings.Builder
-				build.WriteString(`{`)
-				build.WriteString(fmt.Sprintf(`"did":"%s",`, deviceID))
-				build.WriteString(fmt.Sprintf(`"gid":"%s",`, deviceID))
-				build.WriteString(fmt.Sprintf(`"ptid":%d,`, 0))
-				build.WriteString(fmt.Sprintf(`"cid":%d,`, 1))
-				build.WriteString(fmt.Sprintf(`"time":"%s",`, time.Now().Format("2006/01/02 15:04:05")))
-				build.WriteString(fmt.Sprintf(`"func":%d,`, 4))
-				build.WriteString(fmt.Sprintf(`"code":"%s",`, payload.Get("code").MustString()))
-				build.WriteString(fmt.Sprintf(`"err":%d,`, 0))
-				build.WriteString(fmt.Sprintf(`"info":"%t"`, result))
-				build.WriteString(`}`)
-				log.Println(build.String())
-				client.Publish("/Iot/Pub", 1, false, build.String())
-			} else {
-				var build strings.Builder
-				build.WriteString(`{`)
-				build.WriteString(fmt.Sprintf(`"did":"%s",`, deviceID))
-				build.WriteString(fmt.Sprintf(`"gid":"%s",`, deviceID))
-				build.WriteString(fmt.Sprintf(`"ptid":%d,`, 0))
-				build.WriteString(fmt.Sprintf(`"cid":%d,`, 1))
-				build.WriteString(fmt.Sprintf(`"time":"%s",`, time.Now().Format("2006/01/02 15:04:05")))
-				build.WriteString(fmt.Sprintf(`"func":%d,`, 4))
-				build.WriteString(fmt.Sprintf(`"code":"%s",`, payload.Get("code").MustString()))
-				build.WriteString(fmt.Sprintf(`"err":%d,`, 5))
-				build.WriteString(fmt.Sprintf(`"info":"%t"`, result))
-				build.WriteString(`}`)
-				log.Println(build.String())
-				client.Publish("/Iot/Pub", 1, false, build.String())
-			}
-		}
-	}
-}
-
-func control(deviceID, num, state int) bool {
-	client := &http.Client{Timeout: 5 * time.Second}
-	loginParam := map[string]int{"deviceId": deviceID, "relayNum": num, "relayState": state}
-	jsonStr, _ := json.Marshal(loginParam)
-	request, err := http.NewRequest("POST", "http://101.34.116.221:8005/relay", bytes.NewBuffer(jsonStr))
-	request.Header.Add("token", xphToken)
-	request.Header.Set("Content-Type", "application/json")
-	resp, err := client.Do(request)
-	if err != nil {
-		log.Println(err)
-	}
-	result, _ := ioutil.ReadAll(resp.Body)
-	log.Println(string(result))
-	parseBool, err := strconv.ParseBool(string(result))
-	if err != nil {
-		return false
-	}
-	return parseBool
 }

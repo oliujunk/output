@@ -1,4 +1,4 @@
-package houtuyun
+package houtuyun_t
 
 import (
 	"bytes"
@@ -18,8 +18,9 @@ import (
 	"time"
 )
 
-// const broker = "ssl://111.15.13.45:9883"
-const broker = "ssl://lbs-hivemqtt-private-hty.lunz.cn:8883"
+const broker = "ssl://111.15.13.45:9883"
+
+//const broker = "ssl://lbs-hivemqtt-private-hty.lunz.cn:8883"
 
 var (
 	xphToken      string
@@ -72,7 +73,7 @@ func updateDevices() {
 
 func NewTLSConfig() *tls.Config {
 	certpool := x509.NewCertPool()
-	ca, err := ioutil.ReadFile("./ca-zs1.pem")
+	ca, err := ioutil.ReadFile("./ca-zs.pem")
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
@@ -89,8 +90,7 @@ func NewTLSConfig() *tls.Config {
 func initMqttClient() {
 	for _, device := range devices {
 		tlsConfig := NewTLSConfig()
-		//clientOptions := mqtt.NewClientOptions().AddBroker(broker).SetUsername("zrlbsmqttgateway1").SetPassword("123456781").SetTLSConfig(tlsConfig).SetClientID(fmt.Sprintf("%d", device.DeviceID))
-		clientOptions := mqtt.NewClientOptions().AddBroker(broker).SetUsername("zrlbsmqttgateway1").SetPassword("zrlbsmqttgateway1pw").SetTLSConfig(tlsConfig).SetClientID(fmt.Sprintf("%d", device.DeviceID))
+		clientOptions := mqtt.NewClientOptions().AddBroker(broker).SetUsername("zrlbsmqttgateway1").SetPassword("123456781").SetTLSConfig(tlsConfig).SetClientID(fmt.Sprintf("%d", device.DeviceID))
 		clientOptions.SetConnectTimeout(time.Duration(60) * time.Second)
 		client := mqtt.NewClient(clientOptions)
 		if token := client.Connect(); token.Wait() && token.Error() != nil {
@@ -116,7 +116,7 @@ func initMqttClient() {
 
 	for _, device := range devices47 {
 		tlsConfig := NewTLSConfig()
-		clientOptions := mqtt.NewClientOptions().AddBroker(broker).SetUsername("zrlbsmqttgateway1").SetPassword("zrlbsmqttgateway1pw").SetTLSConfig(tlsConfig)
+		clientOptions := mqtt.NewClientOptions().AddBroker(broker).SetUsername("zrlbsmqttgateway1").SetPassword("123456781").SetTLSConfig(tlsConfig)
 		clientOptions.SetConnectTimeout(time.Duration(60) * time.Second)
 		client := mqtt.NewClient(clientOptions)
 		if token := client.Connect(); token.Wait() && token.Error() != nil {
@@ -141,7 +141,7 @@ func initMqttClient() {
 
 func initSporeMqttClient() {
 	tlsConfig := NewTLSConfig()
-	clientOptions := mqtt.NewClientOptions().AddBroker(broker).SetUsername("zrlbsmqttgateway1").SetPassword("zrlbsmqttgateway1pw").SetTLSConfig(tlsConfig)
+	clientOptions := mqtt.NewClientOptions().AddBroker(broker).SetUsername("zrlbsmqttgateway1").SetPassword("123456781").SetTLSConfig(tlsConfig)
 	clientOptions.SetConnectTimeout(time.Duration(60) * time.Second)
 	client := mqtt.NewClient(clientOptions)
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
@@ -164,7 +164,7 @@ func initSporeMqttClient() {
 
 func initPestMqttClient() {
 	tlsConfig := NewTLSConfig()
-	clientOptions := mqtt.NewClientOptions().AddBroker(broker).SetUsername("zrlbsmqttgateway1").SetPassword("zrlbsmqttgateway1pw").SetTLSConfig(tlsConfig)
+	clientOptions := mqtt.NewClientOptions().AddBroker(broker).SetUsername("zrlbsmqttgateway1").SetPassword("123456781").SetTLSConfig(tlsConfig)
 	clientOptions.SetConnectTimeout(time.Duration(60) * time.Second)
 	client := mqtt.NewClient(clientOptions)
 	if token := client.Connect(); token.Wait() && token.Error() != nil {

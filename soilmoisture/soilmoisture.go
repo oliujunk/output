@@ -87,6 +87,7 @@ func sendData() {
 		if len(device.DeviceRemark) <= 0 {
 			continue
 		}
+		deviceNum := strings.Split(device.DeviceRemark, ",")
 		resp, err := http.Get("http://47.105.215.208:8005/intfa/queryData/" + strconv.Itoa(device.DeviceID))
 		if err != nil {
 			log.Println("获取数据异常")
@@ -113,7 +114,7 @@ func sendData() {
 				}
 			}
 
-			content := "005," + device.DeviceRemark + "," +
+			content := "005," + deviceNum[0] + "," +
 				fmt.Sprintf("%4d-%2d-%2d %2d:%2d", now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute()) + ","
 
 			for i := 0; i < 23; i++ {
@@ -150,6 +151,7 @@ func sendData() {
 		if len(device.DeviceRemark) <= 0 {
 			continue
 		}
+		deviceNum := strings.Split(device.DeviceRemark, ",")
 		resp, err := http.Get("http://115.28.187.9:8005/intfa/queryData/" + strconv.Itoa(device.DeviceID))
 		if err != nil {
 			log.Println("获取数据异常")
@@ -176,7 +178,7 @@ func sendData() {
 				}
 			}
 
-			content := "005," + device.DeviceRemark + "," +
+			content := "005," + deviceNum[0] + "," +
 				fmt.Sprintf("%4d-%2d-%2d %2d:%2d", now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute()) + ","
 
 			for i := 0; i < 23; i++ {
@@ -213,6 +215,7 @@ func sendData() {
 		if len(device.DeviceRemark) <= 0 {
 			continue
 		}
+		deviceNum := strings.Split(device.DeviceRemark, ",")
 		resp, err := http.Get("http://101.34.116.221:8005/intfa/queryData/" + strconv.Itoa(device.DeviceID))
 		if err != nil {
 			log.Println("获取数据异常")
@@ -239,7 +242,7 @@ func sendData() {
 				}
 			}
 
-			content := "005," + device.DeviceRemark + "," +
+			content := "005," + deviceNum[0] + "," +
 				fmt.Sprintf("%4d-%2d-%2d %2d:%2d", now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute()) + ","
 
 			for i := 0; i < 23; i++ {

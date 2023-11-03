@@ -27,11 +27,14 @@ type User struct {
 
 // Device 设备信息
 type Device struct {
-	DeviceID          int    `json:"facId"`
-	DeviceName        string `json:"facName"`
-	DeviceRemark      string `json:"remark"`
-	SIM               string `json:"sim"`
-	ElementExtendName string `json:"elementExtendName"`
+	DeviceID          int     `json:"facId"`
+	DeviceName        string  `json:"facName"`
+	DeviceRemark      string  `json:"remark"`
+	SIM               string  `json:"sim"`
+	ElementExtendName string  `json:"elementExtendName"`
+	Longitude         float32 `json:"longitude"`
+	Latitude          float32 `json:"latitude"`
+	Online            bool    `json:"online"`
 }
 
 // Pest 虫情设备信息

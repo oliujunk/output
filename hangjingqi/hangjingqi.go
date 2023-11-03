@@ -66,7 +66,7 @@ func sendData() {
 		if currentData.Datatime != "" {
 			now := time.Now()
 			datatime, _ := time.Parse("2006-01-02 15:04:05", currentData.Datatime)
-			if datatime.After(now.Add(-time.Minute*6)) || true {
+			if datatime.After(now.Add(-time.Minute * 6)) {
 				sendBuf := make([]byte, 72)
 				sendBuf[0] = byte(device.DeviceID / 1000000)
 				sendBuf[1] = byte(device.DeviceID / 10000 % 100)
