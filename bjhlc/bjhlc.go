@@ -99,6 +99,21 @@ func sendData() {
 			result, _ := io.ReadAll(resp.Body)
 			log.Println(string(result))
 
+			req, err = http.NewRequest("POST", "https://sco.pipechina.com.cn:8443/vueiot/roma/environmentStation/syncEnvirStationDevice", bytes.NewBuffer([]byte(message)))
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+			req.Header.Set("Content-Type", "application/json")
+			resp, err = client.Do(req)
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+
+			result, _ = io.ReadAll(resp.Body)
+			log.Println(string(result))
+
 			time.Sleep(1 * time.Second)
 		}
 	}

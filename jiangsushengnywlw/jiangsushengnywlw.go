@@ -113,7 +113,7 @@ func sendData() {
 		_ = json.Unmarshal(result, &dataEntity)
 		if len(dataEntity.Entity) > 0 {
 
-			resp1, err1 := http.Get("http://101.34.116.221:8005/intfa/queryData/68273394")
+			resp1, err1 := http.Get("http://101.34.116.221:8005/intfa/queryData/68268113")
 			if err1 != nil {
 				log.Println("获取数据异常")
 				continue

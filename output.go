@@ -5,9 +5,9 @@ import (
 	"oliujunk/output/bjhlc"
 	"oliujunk/output/hangjingqi"
 	"oliujunk/output/houtuyun"
-	houtuyun_t "oliujunk/output/houtuyun_test"
 	"oliujunk/output/jiamusi"
 	"oliujunk/output/jiangsushengnywlw"
+	"oliujunk/output/ruinong_houtuyun"
 	"oliujunk/output/shangma"
 	"oliujunk/output/soilmoisture"
 	"oliujunk/output/taicangnywlw"
@@ -33,7 +33,7 @@ func main() {
 
 	houtuyun.Start()
 
-	houtuyun_t.Start()
+	//houtuyun_t.Start()
 
 	shangma.Start()
 
@@ -47,7 +47,7 @@ func main() {
 
 	bjhlc.Start()
 
-	//wssw.Start()
+	ruinong_houtuyun.Start()
 
 	select {}
 }
