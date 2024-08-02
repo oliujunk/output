@@ -161,8 +161,8 @@ func Start() {
 		cron.WithChain(cron.SkipIfStillRunning(cron.DefaultLogger)))
 	_, _ = job.AddFunc("0 0 0/12 * * *", updateXphToken)
 	_, _ = job.AddFunc("30 0 0 */1 * *", updateDevices)
-	_, _ = job.AddFunc("0 */2 * * * *", sendData)
-	_, _ = job.AddFunc("0 */1 * * * *", sendHeartBeat)
+	_, _ = job.AddFunc("0 */30 * * * *", sendData)
+	_, _ = job.AddFunc("0 */2 * * * *", sendHeartBeat)
 
 	job.Start()
 }

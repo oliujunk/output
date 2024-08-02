@@ -9,10 +9,12 @@ import (
 	"github.com/bitly/go-simplejson"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/robfig/cron/v3"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"oliujunk/output/xphapi"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -34,7 +36,7 @@ var (
 
 	sporeClient mqtt.Client
 	pestClient  mqtt.Client
-	pestImei    = "G95799357"
+	pestImei    = "864865062173894"
 	sporeImei   = "866547052770826"
 )
 
@@ -72,7 +74,7 @@ func updateDevices() {
 
 func NewTLSConfig() *tls.Config {
 	certpool := x509.NewCertPool()
-	ca, err := ioutil.ReadFile("./ca-zs1.pem")
+	ca, err := os.ReadFile("./ca-zs1.pem")
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
@@ -267,7 +269,7 @@ func sendData() {
 			log.Println("获取数据异常")
 			return
 		}
-		result, err := ioutil.ReadAll(resp.Body)
+		result, err := io.ReadAll(resp.Body)
 		if err != nil {
 			continue
 		}
@@ -404,12 +406,12 @@ func sendPestData() {
 	pestData := getPestData(pestImei, xphToken)
 	var dataBuilder strings.Builder
 	dataBuilder.WriteString(`{`)
-	dataBuilder.WriteString(fmt.Sprintf(`"%s":%.1f,`, "102", float32(pestData.E1)/10.0))      // 湿度
-	dataBuilder.WriteString(fmt.Sprintf(`"%s":%.1f,`, "101", float32(pestData.E2)/10.0))      // 温度
-	dataBuilder.WriteString(fmt.Sprintf(`"%s":%d,`, "112", pestData.E3))                      // 照度
-	dataBuilder.WriteString(fmt.Sprintf(`"%s":%.6f,`, "262", float32(pestData.E4)/1000000.0)) // 经度
-	dataBuilder.WriteString(fmt.Sprintf(`"%s":%.6f,`, "263", float32(pestData.E5)/1000000.0)) // 纬度
-	dataBuilder.WriteString(fmt.Sprintf(`"%s":%d`, "277", pestData.E6))                       // 诱虫数
+	dataBuilder.WriteString(fmt.Sprintf(`"%s":%.1f,`, "102", float32(pestData.E2)/10.0)) // 湿度
+	dataBuilder.WriteString(fmt.Sprintf(`"%s":%.1f,`, "101", float32(pestData.E1)/10.0)) // 温度
+	//dataBuilder.WriteString(fmt.Sprintf(`"%s":%d,`, "112", pestData.E3))                      // 照度
+	dataBuilder.WriteString(fmt.Sprintf(`"%s":%.6f,`, "262", float32(pestData.E7)/1000000.0)) // 经度
+	dataBuilder.WriteString(fmt.Sprintf(`"%s":%.6f`, "263", float32(pestData.E8)/1000000.0))  // 纬度
+	//dataBuilder.WriteString(fmt.Sprintf(`"%s":%d`, "277", pestData.E6))                       // 诱虫数
 	dataBuilder.WriteString(`}`)
 
 	var build strings.Builder

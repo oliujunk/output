@@ -153,8 +153,8 @@ func Start() {
 		cron.WithChain(cron.SkipIfStillRunning(cron.DefaultLogger)))
 	_, _ = job.AddFunc("0 0 0/12 * * *", updateXphToken)
 	_, _ = job.AddFunc("30 0 0 */1 * *", updateDevices)
-	_, _ = job.AddFunc("0 */2 * * * *", sendData)
-	_, _ = job.AddFunc("0 */1 * * * *", sendHeartBeat)
+	_, _ = job.AddFunc("0 */10 * * * *", sendData)
+	_, _ = job.AddFunc("0 */2 * * * *", sendHeartBeat)
 
 	job.Start()
 }
@@ -228,6 +228,18 @@ func sendData() {
 						dataBuilder.WriteString(fmt.Sprintf(`"%s":%s,`, entity.ENum, entity.EValue))
 					}
 				}
+
+				if len(dataEntity.RelayEntity) > 0 {
+					dataBuilder.WriteString(`,`)
+					for index1, entity1 := range dataEntity.RelayEntity {
+						if index1+1 == len(dataEntity.RelayEntity) {
+							dataBuilder.WriteString(fmt.Sprintf(`"%d":%d`, entity1.RIndex, entity1.RState))
+						} else {
+							dataBuilder.WriteString(fmt.Sprintf(`"%d":%d,`, entity1.RIndex, entity1.RState))
+						}
+					}
+				}
+
 				dataBuilder.WriteString(`}`)
 
 				var build strings.Builder
@@ -264,6 +276,7 @@ func sendData() {
 			}
 			time.Sleep(1 * time.Second)
 		}
+
 	}
 
 	sendPestData()

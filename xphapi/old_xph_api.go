@@ -46,9 +46,10 @@ type Pest struct {
 
 // DataEntity 数据
 type DataEntity struct {
-	DeviceID   int      `json:"deviceId"`
-	DeviceName string   `json:"deviceName"`
-	Entity     []Entity `json:"entity"`
+	DeviceID    int           `json:"deviceId"`
+	DeviceName  string        `json:"deviceName"`
+	Entity      []Entity      `json:"entity"`
+	RelayEntity []RelayEntity `json:"relayEntity"`
 }
 
 // Entity 实体
@@ -59,6 +60,14 @@ type Entity struct {
 	EKey     string `json:"eKey"`
 	EName    string `json:"eName"`
 	ENum     string `json:"eNum"`
+}
+
+// RelayEntity 实体
+type RelayEntity struct {
+	RIndex int    `json:"rIndex"`
+	RState int    `json:"rState"`
+	RKey   string `json:"rKey"`
+	RName  string `json:"rName"`
 }
 
 type CurrentData struct {

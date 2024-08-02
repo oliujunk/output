@@ -11,6 +11,7 @@ import (
 	"oliujunk/output/shangma"
 	"oliujunk/output/soilmoisture"
 	"oliujunk/output/taicangnywlw"
+	"oliujunk/output/zhonglianzhike"
 	"oliujunk/output/zhongrui"
 	"oliujunk/output/zhongyaocai"
 	"oliujunk/output/zjtpyun"
@@ -48,6 +49,8 @@ func main() {
 	bjhlc.Start()
 
 	ruinong_houtuyun.Start()
+
+	zhonglianzhike.Start()
 
 	select {}
 }
