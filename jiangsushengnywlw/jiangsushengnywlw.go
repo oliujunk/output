@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/robfig/cron/v3"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -67,6 +68,9 @@ func sendData() {
 			datatime, _ := time.Parse("2006-01-02 15:04:05", dataEntity.Entity[0].Datetime)
 			if datatime.After(now.Add(-time.Hour * 2)) {
 				names := strings.Split(device.ElementExtendName, "/")
+				if len(names) < 2 {
+					continue
+				}
 				var build strings.Builder
 				build.WriteString(`{`)
 				build.WriteString(fmt.Sprintf(`"deviceId":"%d",`, device.DeviceID))
@@ -108,7 +112,7 @@ func sendData() {
 			log.Println("获取数据异常")
 			continue
 		}
-		result, _ := ioutil.ReadAll(resp.Body)
+		result, _ := io.ReadAll(resp.Body)
 		var dataEntity xphapi.DataEntity
 		_ = json.Unmarshal(result, &dataEntity)
 		if len(dataEntity.Entity) > 0 {
@@ -118,7 +122,7 @@ func sendData() {
 				log.Println("获取数据异常")
 				continue
 			}
-			result1, _ := ioutil.ReadAll(resp1.Body)
+			result1, _ := io.ReadAll(resp1.Body)
 			var dataEntity1 xphapi.DataEntity
 			_ = json.Unmarshal(result1, &dataEntity1)
 
@@ -157,7 +161,7 @@ func sendData() {
 					continue
 				}
 
-				result, _ := ioutil.ReadAll(resp.Body)
+				result, _ := io.ReadAll(resp.Body)
 				log.Println(string(result))
 			}
 			time.Sleep(1 * time.Second)

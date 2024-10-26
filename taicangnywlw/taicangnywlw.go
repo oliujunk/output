@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/bitly/go-simplejson"
 	"github.com/robfig/cron/v3"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
@@ -38,7 +38,7 @@ func Start() {
 	_, _ = job.AddFunc("0 0 0/1 * * *", updateDevices)
 	_, _ = job.AddFunc("0 0 0/1 * * *", updatePests)
 	//_, _ = job.AddFunc("0 */5 * * * *", sendData)
-	_, _ = job.AddFunc("0 */30 * * * *", sendData)
+	_, _ = job.AddFunc("0 */15 * * * *", sendData)
 	job.Start()
 }
 
@@ -59,7 +59,7 @@ func updateThirdToken() {
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	client := &http.Client{}
 	resp, err := client.Do(req)
-	result, err := ioutil.ReadAll(resp.Body)
+	result, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Println(err)
 		return
@@ -87,12 +87,15 @@ func sendData() {
 		if len(device.DeviceRemark) <= 0 {
 			continue
 		}
+		if device.DeviceID == 67700283 || device.DeviceID == 69156663 || device.DeviceID == 59141938 {
+			continue
+		}
 		resp, err := http.Get("http://101.34.116.221:8005/intfa/queryData/" + strconv.Itoa(device.DeviceID))
 		if err != nil {
 			log.Println("获取数据异常")
 			continue
 		}
-		result, _ := ioutil.ReadAll(resp.Body)
+		result, _ := io.ReadAll(resp.Body)
 		var dataEntity xphapi.DataEntity
 		_ = json.Unmarshal(result, &dataEntity)
 		if len(dataEntity.Entity) > 0 {
@@ -100,17 +103,42 @@ func sendData() {
 			datatime, _ := time.Parse("2006-01-02 15:04:05", dataEntity.Entity[0].Datetime)
 			if datatime.After(now.Add(-time.Hour * 2)) {
 				names := strings.Split(device.ElementExtendName, "/")
+				if len(names) < 2 {
+					continue
+				}
 				var build strings.Builder
 				build.WriteString(`{`)
 				build.WriteString(fmt.Sprintf(`"data":{`))
+				//if device.DeviceID == 67700192 {
+				//	build.WriteString(fmt.Sprintf(`"deviceid":"%d",`, 67700283))
+				//} else if device.DeviceID == 60549454 {
+				//	build.WriteString(fmt.Sprintf(`"deviceid":"%d",`, 69156663))
+				//} else if device.DeviceID == 60544384 {
+				//	build.WriteString(fmt.Sprintf(`"deviceid":"%d",`, 59141938))
+				//} else {
+				//	build.WriteString(fmt.Sprintf(`"deviceid":"%d",`, device.DeviceID))
+				//}
 				build.WriteString(fmt.Sprintf(`"deviceid":"%d",`, device.DeviceID))
+
 				for index, entity := range dataEntity.Entity {
 					build.WriteString(fmt.Sprintf(`"%s":%s,`, names[index], entity.EValue))
 				}
 				message := build.String()
 				message = strings.TrimRight(message, ",")
 				message = message + `},`
+
+				//if device.DeviceID == 67700192 {
+				//	message = message + fmt.Sprintf(`"deviceid":"%d"`, 67700283)
+				//} else if device.DeviceID == 60549454 {
+				//	message = message + fmt.Sprintf(`"deviceid":"%d"`, 69156663)
+				//} else if device.DeviceID == 60544384 {
+				//	message = message + fmt.Sprintf(`"deviceid":"%d"`, 59141938)
+				//} else {
+				//	message = message + fmt.Sprintf(`"deviceid":"%d"`, device.DeviceID)
+				//}
+
 				message = message + fmt.Sprintf(`"deviceid":"%d"`, device.DeviceID)
+
 				message = message + `}`
 
 				log.Println(message)
@@ -128,7 +156,7 @@ func sendData() {
 					continue
 				}
 
-				result, _ := ioutil.ReadAll(resp.Body)
+				result, _ := io.ReadAll(resp.Body)
 				log.Println(string(result))
 			}
 			time.Sleep(1 * time.Second)
@@ -144,17 +172,17 @@ func sendData() {
 			log.Println("获取数据异常")
 			continue
 		}
-		result, _ := ioutil.ReadAll(resp.Body)
+		result, _ := io.ReadAll(resp.Body)
 		var dataEntity xphapi.DataEntity
 		_ = json.Unmarshal(result, &dataEntity)
 		if len(dataEntity.Entity) > 0 {
 
-			resp1, err1 := http.Get("http://101.34.116.221:8005/intfa/queryData/68273394")
+			resp1, err1 := http.Get("http://101.34.116.221:8005/intfa/queryData/68268113")
 			if err1 != nil {
 				log.Println("获取数据异常")
 				continue
 			}
-			result1, _ := ioutil.ReadAll(resp1.Body)
+			result1, _ := io.ReadAll(resp1.Body)
 			var dataEntity1 xphapi.DataEntity
 			_ = json.Unmarshal(result1, &dataEntity1)
 
@@ -193,7 +221,7 @@ func sendData() {
 					continue
 				}
 
-				result, _ := ioutil.ReadAll(resp.Body)
+				result, _ := io.ReadAll(resp.Body)
 				log.Println(string(result))
 			}
 			time.Sleep(1 * time.Second)
