@@ -2,7 +2,8 @@ package main
 
 import (
 	"log"
-	"oliujunk/output/wssw"
+	"oliujunk/output/yunfei"
+	yunfei_dashuju "oliujunk/output/yunfei-dashuju"
 )
 
 func init() {
@@ -12,7 +13,8 @@ func init() {
 
 func main() {
 
-	wssw.Start()
+	yunfei.Start()
+	yunfei_dashuju.Start()
 
 	select {}
 }

@@ -54,7 +54,7 @@ type DataEntity struct {
 // Entity 实体
 type Entity struct {
 	Datetime string `json:"datetime"`
-	EUnit    string `json:"eUnit"`
+	EUnit    string `json:"-"`
 	EValue   string `json:"eValue"`
 	EKey     string `json:"eKey"`
 	EName    string `json:"eName"`
