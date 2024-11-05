@@ -55,6 +55,10 @@ func sendData() {
 		if len(device.DeviceRemark) <= 0 {
 			continue
 		}
+
+		if device.DeviceID == 59141938 {
+			continue
+		}
 		resp, err := http.Get("http://101.34.116.221:8005/intfa/queryData/" + strconv.Itoa(device.DeviceID))
 		if err != nil {
 			log.Println("获取数据异常")
