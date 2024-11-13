@@ -29,9 +29,8 @@ func Start() {
 		cron.WithSeconds(),
 		cron.WithChain(cron.SkipIfStillRunning(cron.DefaultLogger)))
 	_, _ = job.AddFunc("0 0 0/12 * * *", updateToken)
-	_, _ = job.AddFunc("0 0 0/1 * * *", updateDevices)
-	_, _ = job.AddFunc("0 */1 * * * *", sendData)
-	//_, _ = job.AddFunc("0 */30 * * * *", sendData)
+	_, _ = job.AddFunc("0 0 0 */1 * *", updateDevices)
+	_, _ = job.AddFunc("0 */5 * * * *", sendData)
 	job.Start()
 }
 
@@ -41,6 +40,14 @@ func updateToken() {
 
 func updateDevices() {
 	devices = xphapi.GetDevices121("大数据", token)
+
+	if len(clients) > 0 {
+		for _, client := range clients {
+			client.Disconnect(500)
+		}
+		clients = []mqtt.Client{}
+		clientsStatus = []bool{}
+	}
 
 	initMqttClient()
 }
