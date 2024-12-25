@@ -90,7 +90,7 @@ func sendData() {
 		//if device.DeviceID == 67700283 || device.DeviceID == 69156663 || device.DeviceID == 59141938 {
 		//	continue
 		//}
-		if device.DeviceID == 59141938 {
+		if device.DeviceID == 59141938 || device.DeviceID == 67700283 {
 			continue
 		}
 		resp, err := http.Get("http://101.34.116.221:8005/intfa/queryData/" + strconv.Itoa(device.DeviceID))

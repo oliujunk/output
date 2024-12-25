@@ -50,6 +50,7 @@ type DataEntity struct {
 	DeviceName  string        `json:"deviceName"`
 	Entity      []Entity      `json:"entity"`
 	RelayEntity []RelayEntity `json:"relayEntity"`
+	Online      bool          `json:"online"`
 }
 
 // Entity 实体
