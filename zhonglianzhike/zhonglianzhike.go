@@ -99,7 +99,7 @@ func sendData() {
 
 			if len(dataEntity.RelayEntity) > 0 {
 				for _, entity1 := range dataEntity.RelayEntity {
-					dataMap[entity1.RName] = fmt.Sprintf("%d", entity1.RState)
+					dataMap[fmt.Sprintf("DI%d", entity1.RIndex)] = fmt.Sprintf("%d", entity1.RState)
 				}
 			}
 
