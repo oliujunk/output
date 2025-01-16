@@ -19,6 +19,8 @@ import (
 var (
 	token   string
 	devices []xphapi.Device
+	//prodUrl = "https://sco.pipechina.com.cn:8443"
+	prodUrl = "https://xcsco.pipechina.com.cn"
 )
 
 func updateXphToken() {
@@ -39,8 +41,8 @@ func Start() {
 		cron.WithChain(cron.SkipIfStillRunning(cron.DefaultLogger)))
 	_, _ = job.AddFunc("0 0 0/12 * * *", updateXphToken)
 	_, _ = job.AddFunc("0 0 0/1 * * *", updateDevices)
-	_, _ = job.AddFunc("0 */30 * * * *", sendData)
-	//_, _ = job.AddFunc("0 */1 * * * *", sendData)
+	//_, _ = job.AddFunc("0 */30 * * * *", sendData)
+	_, _ = job.AddFunc("0 */1 * * * *", sendData)
 
 	job.Start()
 }
@@ -83,7 +85,7 @@ func sendData() {
 			message = message + `}`
 
 			log.Println(message)
-			req, err := http.NewRequest("POST", "https://sco.pipechina.com.cn:8443/pims/prod-api/business/badWeather/badWeatherPoint/point/listen", bytes.NewBuffer([]byte(message)))
+			req, err := http.NewRequest("POST", prodUrl+"/pims/prod-api/business/badWeather/badWeatherPoint/point/listen", bytes.NewBuffer([]byte(message)))
 			if err != nil {
 				log.Println(err)
 				continue
@@ -99,7 +101,7 @@ func sendData() {
 			result, _ := io.ReadAll(resp.Body)
 			log.Println(string(result))
 
-			req, err = http.NewRequest("POST", "https://sco.pipechina.com.cn:8443/vueiot/roma/environmentStation/syncEnvirStationDevice", bytes.NewBuffer([]byte(message)))
+			req, err = http.NewRequest("POST", prodUrl+"/vueiot/roma/environmentStation/syncEnvirStationDevice", bytes.NewBuffer([]byte(message)))
 			if err != nil {
 				log.Println(err)
 				continue
