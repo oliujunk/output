@@ -3,6 +3,18 @@ package main
 import (
 	"log"
 	"oliujunk/output/bjhlc"
+	"oliujunk/output/hangjingqi"
+	"oliujunk/output/houtuyun"
+	"oliujunk/output/jiamusi"
+	"oliujunk/output/jiangsushengnywlw"
+	"oliujunk/output/ruinong_houtuyun"
+	"oliujunk/output/shangma"
+	"oliujunk/output/soilmoisture"
+	"oliujunk/output/taicangnywlw"
+	"oliujunk/output/zhiling"
+	"oliujunk/output/zhongrui"
+	"oliujunk/output/zhongyaocai"
+	"oliujunk/output/zjtpyun"
 )
 
 func init() {
@@ -12,33 +24,29 @@ func init() {
 
 func main() {
 
-	//soilmoisture.Start()
-	//
-	//jiamusi.Start()
-	//
-	//hangjingqi.Start()
-	//
-	//zhongrui.Start()
-	//
-	//houtuyun.Start()
-	//
-	////houtuyun_t.Start()
-	//
-	//shangma.Start()
-	//
-	//zjtpyun.Start()
-	//
-	//zhongyaocai.Start()
-	//
-	//jiangsushengnywlw.Start()
-	//
-	//taicangnywlw.Start()
-	//
-	//
-	//
-	//ruinong_houtuyun.Start()
-	//
-	//zhiling.Start()
+	soilmoisture.Start()
+
+	jiamusi.Start()
+
+	hangjingqi.Start()
+
+	zhongrui.Start()
+
+	houtuyun.Start()
+
+	shangma.Start()
+
+	zjtpyun.Start()
+
+	zhongyaocai.Start()
+
+	jiangsushengnywlw.Start()
+
+	taicangnywlw.Start()
+
+	ruinong_houtuyun.Start()
+
+	zhiling.Start()
 
 	bjhlc.Start()
 
