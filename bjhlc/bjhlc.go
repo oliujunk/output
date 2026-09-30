@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/robfig/cron/v3"
 	"io"
 	"log"
 	"net/http"
@@ -12,6 +11,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/robfig/cron/v3"
 )
 
 // 北京华隆辰
@@ -32,7 +33,7 @@ func updateDevices() {
 }
 
 func Start() {
-	// 全国土壤墒情平台
+
 	log.Println("北京华隆辰数据推送 start ------")
 	updateXphToken()
 	updateDevices()

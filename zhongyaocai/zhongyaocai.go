@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/robfig/cron/v3"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -14,6 +14,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/robfig/cron/v3"
 )
 
 var (
@@ -134,7 +136,7 @@ func sendData() {
 				req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 				client := &http.Client{}
 				resp, err := client.Do(req)
-				res, err := ioutil.ReadAll(resp.Body)
+				res, err := io.ReadAll(resp.Body)
 				if err != nil {
 					log.Println(err)
 					return

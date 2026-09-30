@@ -1,4 +1,4 @@
-FROM alpine:3.15.2
+FROM registry.cn-hangzhou.aliyuncs.com/oliujunk/alpine:3.21.3
 
 RUN apk add --no-cache tzdata
 

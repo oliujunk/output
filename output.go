@@ -3,16 +3,12 @@ package main
 import (
 	"log"
 	"oliujunk/output/bjhlc"
-	"oliujunk/output/hangjingqi"
-	"oliujunk/output/houtuyun"
 	"oliujunk/output/jiamusi"
 	"oliujunk/output/jiangsushengnywlw"
 	"oliujunk/output/ruinong_houtuyun"
-	"oliujunk/output/shangma"
 	"oliujunk/output/soilmoisture"
 	"oliujunk/output/taicangnywlw"
 	"oliujunk/output/zhiling"
-	"oliujunk/output/zhongrui"
 	"oliujunk/output/zhongyaocai"
 	"oliujunk/output/zjtpyun"
 )
@@ -28,13 +24,13 @@ func main() {
 
 	jiamusi.Start()
 
-	hangjingqi.Start()
+	//hangjingqi.Start()
 
-	zhongrui.Start()
+	//zhongrui.Start()
 
-	houtuyun.Start()
+	//houtuyun.Start()
 
-	shangma.Start()
+	//shangma.Start()
 
 	zjtpyun.Start()
 

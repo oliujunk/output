@@ -23,6 +23,7 @@ type User struct {
 	UserType string   `json:"userType"`
 	Devices  []Device `json:"devices"`
 	Pests    []Pest   `json:"pests"`
+	Valves   []Valve  `json:"valves"`
 }
 
 // Device 设备信息
@@ -41,6 +42,12 @@ type Device struct {
 type Pest struct {
 	DeviceID     string `json:"facId"`
 	DeviceName   string `json:"facName"`
+	DeviceRemark string `json:"remark"`
+}
+
+type Valve struct {
+	DeviceID     string `json:"imei"`
+	DeviceName   string `json:"name"`
 	DeviceRemark string `json:"remark"`
 }
 
