@@ -5,20 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aabfd22c-7c80-4078-b8bf-73145f845fb6" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/mmkj/mmkj.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bjhlc/bjhlc.go" beforeDir="false" afterPath="$PROJECT_DIR$/bjhlc/bjhlc.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output.go" beforeDir="false" afterPath="$PROJECT_DIR$/output.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ruinong_houtuyun/ruinong_houtuyun.go" beforeDir="false" afterPath="$PROJECT_DIR$/ruinong_houtuyun/ruinong_houtuyun.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xphapi/old_xph_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/xphapi/old_xph_api.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xphapi/rn_xph_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/xphapi/rn_xph_api.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zhongyaocai/zhongyaocai.go" beforeDir="false" afterPath="$PROJECT_DIR$/zhongyaocai/zhongyaocai.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
   </component>
   <component name="GOROOT" url="file://$USER_HOME$/sdk/go1.26.3" />
   <component name="Git.Settings">
@@ -33,6 +34,9 @@
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="com.goide.dfa.ui.problems.view" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4,
   &quot;fromUser&quot;: false
@@ -44,8 +48,10 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
     &quot;Docker.build-output-main.executor&quot;: &quot;Run&quot;,
-    &quot;Go 构建.build.executor&quot;: &quot;Run&quot;,
+    &quot;Go 构建.build.executor&quot;: &quot;Debug&quot;,
+    &quot;Go 构建.debug.executor&quot;: &quot;Debug&quot;,
     &quot;Go 构建.go build oliujunk/output.executor&quot;: &quot;Debug&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.GoLinterPluginOnboardingV2&quot;: &quot;true&quot;,
@@ -58,14 +64,14 @@
     &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;mmkj&quot;,
     &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/oliujunk/code/go/output&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;go.sdk&quot;
   }
 }</component>
-  <component name="RunManager" selected="Docker.build-output-main">
+  <component name="RunManager" selected="Go 构建.build">
     <configuration name="build" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="output" />
       <working_directory value="$PROJECT_DIR$" />
